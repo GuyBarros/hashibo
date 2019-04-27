@@ -147,93 +147,141 @@ function fedRender()
 
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-      
 	<section>
         <section>
-          <h1>Hashicorp</h1>
-          <h2>Cloud Infrastructure Automation</h2>
+          <h1>The Hashistack</h1>
+          <h2>How it all fits together</h2>
 		  <img src="images/hashicorplogo.png">
-		  <h4><a href="mailto:john.boero@hashicorp.com">JohnnyB@hashicorp.com</a></h4>
+		  <h4><a href="mailto:guy@hashicorp.com">guy@hashicorp.com</a></h4>
         </section>
-		<section data-markdown class="center">
-			<img src="images/stack1.png">
-        </section>
+      
 		<section>
         <h1>Suite:</h1>
 		<ul><h3>
-			<li><b>Consul</b> service discovery, cluster management.</li>
+      <li><b>Vagrant</b> easy and flexible VM orchestration.</li>
+      <li><b>Packer</b> consistent and easy machine images building.</li>
+      <li><b>Terraform</b> runtime configuration.</li>
+      <li><b>Vault</b> secure secret managment</li>
+      <li><b>Consul</b> service discovery, cluster management.</li>
 			<li><b>Nomad</b> cluster and container scheduling.</li>
-			<li><b>Vault</b> secure secret encryption.</li>
-			<li><b>Terraform</b> runtime configuration.</li>
-			<li><b>Vagrant</b> easy and flexible VM orchestration.</li>
-			<li><b>Packer</b> consistent and easy machine images building.</li>
-		</ul></h3>
+					</ul></h3>
         </section>
-	</section>
-
-	<section>
-		<section><img src="images/consul.png"></section>
-        <section><img src="images/consul1.png"></section>
-        <section><img src="images/consul2.png"></section>
+         
+        <section style="top:-65%">
+          <img class="stretch" src="images/hashistack1.webp">
+        </section>
+      
+        <section style="top:-65%"><img class="stretch" src="images/terraform.webp"></section>
+        <section style="top:-65%"><img class="stretch" src="images/consul-1.webp"></section>
+        <section style="top:-65%"><img class="stretch" src="images/vault.webp"></section>
+        <section style="top:-65%"><img class="stretch" src="images/nomad_use_cases.webp"></section>
+  </section>
+  
+  <!-- Start Vagrant -->
+  <section>
+		<section><img src="images/vagrant.png"></section>
+		<section>
+            <h2>Why Vagrant?</h2>
+            <p>To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can automatically install and configure software on the virtual machine.</p>
+            <code> $ vagrant init centos/atomic-host</code>
+		</section>
+		<section><img src="images/vagrant1.png"></section>
         <section>
-			<h2>Consul DNS Query Interface</h2>
-			Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
-            <pre class="float" style="width:100%"><code>
-admin@hashicorp.com: dig web-frontend.service.consul. ANY
-; <<>> DiG 9.8.3-P1 <<>> web-frontend.service.consul. ANY
-;; global options: +cmd
+            <h2>Instant Environments</h2>
+            <pre class="small float" style="center; width:120%"><code>
+$  vagrant init centos/atomic-host
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+$  vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Box 'centos/atomic-host' could not be found. Attempting to find and install...
+    default: Box Provider: virtualbox
+    default: Box Version: >= 0
+==> default: Loading metadata for box 'centos/atomic-host'
+    default: URL: https://vagrantcloud.com/centos/atomic-host
+==> default: Adding box 'centos/atomic-host' (v1710.01) for provider: virtualbox
+    default: Downloading: https://vagrantcloud.com/centos/boxes/atomic-host/versions/1710.01/providers/virtualbox.box
+    default: Progress: 31% (Rate: 3492k/s, Estimated time remaining: 0:02:06)
+    </code></pre>
+        </section>
+		<section>
+            <h2>Simple and Powerful</h2>
+Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.
+<pre class="small float" style="width:100%"><code>
+$ vagrant init hashicorp/precise645
  
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29981
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
-;; QUESTION SECTION:
-;web-frontend.service.consul. IN ANY
+$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'hashicorp/precise64'...
+==> default: Forwarding ports...
+default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Waiting for machine to boot...
  
-;; ANSWER SECTION:
-web-frontend.service.consul. 0 IN A 10.0.3.83
-web-frontend.service.consul. 0 IN A 10.0.1.10
+$ vagrant ssh
+vagrant@precise64:~$ _
 </code></pre>
 		</section>
-	</section>
-	
-	<section>
-		<section><img src="images/nomadlogo.png"></section>
-		<section>
-			<h2>What is Nomad?</h2>
-Nomad is a tool for managing a cluster of machines and running applications on them. Nomad abstracts away machines and the location of applications, and instead enables users to declare what they want to run.  Nomad handles where they should run and how to run them.
-			<img src="images/nomad-diagram.png">
-		</section>
-		<section>
-			<ul><li><b>Docker Support:</b> Nomad supports Docker as a first-class workload type. Jobs submitted to Nomad can use the docker driver to easily deploy containerized applications to a cluster. Nomad enforces the user-specified constraints, ensuring the application only runs in the correct region, datacenter, and host environment.
-			<li><b>Operationally Simple:</b> Nomad ships as a single binary, both for clients and servers, and requires no external services for coordination or storage.
-			<li><b>Multi-Datacenter and Multi-Region Aware:</b> Nomad models infrastructure as groups of datacenters which form a larger region. Scheduling operates at the region level allowing for cross-datacenter scheduling. Multiple regions federate together allowing jobs to be registered globally.
-			</ul>
-		</section>
-		<section>
-			<ul><li><b>Flexible Workloads:</b> Nomad has extensible support for task drivers, allowing it to run containerized, virtualized, and standalone applications. Users can easily start Docker containers, VMs, or application runtimes like Java. Nomad supports Linux, Windows, BSD and OSX, providing the flexibility to run any workload.
-			<li><b>Built for Scale:</b> Nomad was designed from the ground up to support global scale infrastructure. Nomad is distributed and highly available, using both leader election and state replication to provide availability in the face of failures. Nomad is optimistically concurrent, enabling all servers to participate in scheduling decisions which increases the total throughput and reduces latency to support demanding workloads.
-			</ul>
-		</section>
-	</section>
-	
-	<section>
-		<section><img src="images/vault.png"></section>
-		<section>
-			<img src="images/vault1.png">
-			<b>Vault</b> secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing.
-		</section>
-		<section>
-			<ul><li><b>Secret Storage</b> Vault can store your existing secrets, or it can dynamically generate new secrets to control access to third-party resources or provide time-limited credentials for your infrastructure. All data that Vault stores is encrypted. Any dynamically-generated secrets are associated with leases, and Vault will automatically revoke these secrets after the lease period ends. Access control policies provide strict control over who can access what secrets.
-			<li><b>Key Rolling</b> Secrets you store within Vault can be updated at any time. If using Vault's encryption-as-a-service functionality, the keys used can be rolled to a new key version at any time, while retaining the ability to decrypt values encrypted with past key versions. For dynamically-generated secrets, configurable maximum lease lifetimes ensure that key rolling is easy to enforce.
-			</ul>
-		</section>
-		<section>
-			<ul><li><b>Audit Logs</b>
-			Vault stores a detailed audit log of all authenticated client interaction: authentication, token creation, secret access, secret revocation, and more. Audit logs can be sent to multiple backends to ensure redundant copies. Paired with Vault's strict leasing policies, operators can easily trace the lifetime and origin of any secret.
-			</ul>
-		</section>
-	</section>
-	
+    </section>
+    <!-- End Vagrant -->
+  
+    <!-- Start Packer -->
+    <section>
+      <section><img src="images/packer.png"></section>
+      <section>
+          <h2>Modern, Automated</h2>
+Packer is easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software within your Packer-made images. Packer brings machine images into the modern age, unlocking untapped potential and opening new opportunities.
+      </section>
+      <section>
+          <pre class="small float" style="center; width:120%"><code>
+$ packer build template.json
+==> virtualbox: virtualbox output will be in this color.
+==> vmware: vmware output will be in this color.
+==> vmware: Copying or downloading ISO. Progress will be reported periodically.
+==> vmware: Creating virtual machine disk
+==> vmware: Building and writing VMX file
+==> vmware: Starting HTTP server on port 8964
+==> vmware: Starting virtual machine...
+==> virtualbox: Downloading VirtualBox guest additions. Progress will be shown periodically.
+==> virtualbox: Copying or downloading ISO. Progress will be reported periodically.
+==> virtualbox: Starting HTTP server on port 8081
+==> virtualbox: Creating virtual machine...
+==> virtualbox: Creating hard drive...
+==> virtualbox: Creating forwarded port mapping for SSH (host port 3213)
+==> virtualbox: Executing custom VBoxManage commands...
+  virtualbox: Executing: modifyvm packer --memory 480
+  virtualbox: Executing: modifyvm packer --cpus 1
+==> virtualbox: Starting the virtual machine...
+==> vmware: Waiting 10s for boot...
+==> virtualbox: Waiting 10s for boot...
+          </code></pre>
+      </section>
+      <section>
+          What about Docker container images?
+          <pre class="small float" style="center; width:120%"><code>
+{
+"type": "docker",
+"image": "ubuntu",
+"commit": true,
+"changes": [
+  "USER www-data",
+  "WORKDIR /var/www",
+  "ENV HOSTNAME www.example.com",
+  "VOLUME /test1 /test2",
+  "EXPOSE 80 443",
+  "LABEL version=1.0",
+  "ONBUILD RUN date",
+  "CMD [\"nginx\", \"-g\", \"daemon off;\"]",
+  "ENTRYPOINT /var/www/start.sh"
+]
+}
+          </code></pre>
+      </section>
+  </section>
+  <!-- End Packer -->
+
+  <!-- Start Terraform -->	
 	<section>
 		<section><img src="images/terraform.png"></section>
 		<section>
@@ -289,108 +337,84 @@ resource "aws_instance" "app" {
 }
 </code></pre>
         </section>
-	</section>
-	
-    <section>
-		<section><img src="images/vagrant.png"></section>
+  </section>
+  <!-- Start Terraform -->
+  
+  <!-- Start Vault -->
+	<section>
+		<section><img src="images/vault.png"></section>
 		<section>
-            <h2>Why Vagrant?</h2>
-            <p>To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can automatically install and configure software on the virtual machine.</p>
-            <code> $ vagrant init centos/atomic-host</code>
+			<img src="images/vault1.png">
+			<b>Vault</b> secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing.
 		</section>
-		<section><img src="images/vagrant1.png"></section>
-        <section>
-            <h2>Instant Environments</h2>
-            <pre class="small float" style="center; width:120%"><code>
-$  vagrant init centos/atomic-host
-A `Vagrantfile` has been placed in this directory. You are now
-ready to `vagrant up` your first virtual environment! Please read
-the comments in the Vagrantfile as well as documentation on
-`vagrantup.com` for more information on using Vagrant.
-$  vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Box 'centos/atomic-host' could not be found. Attempting to find and install...
-    default: Box Provider: virtualbox
-    default: Box Version: >= 0
-==> default: Loading metadata for box 'centos/atomic-host'
-    default: URL: https://vagrantcloud.com/centos/atomic-host
-==> default: Adding box 'centos/atomic-host' (v1710.01) for provider: virtualbox
-    default: Downloading: https://vagrantcloud.com/centos/boxes/atomic-host/versions/1710.01/providers/virtualbox.box
-    default: Progress: 31% (Rate: 3492k/s, Estimated time remaining: 0:02:06)
-    </code></pre>
-        </section>
 		<section>
-            <h2>Simple and Powerful</h2>
-Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.
-<pre class="small float" style="width:100%"><code>
-$ vagrant init hashicorp/precise645
+			<ul><li><b>Secret Storage</b> Vault can store your existing secrets, or it can dynamically generate new secrets to control access to third-party resources or provide time-limited credentials for your infrastructure. All data that Vault stores is encrypted. Any dynamically-generated secrets are associated with leases, and Vault will automatically revoke these secrets after the lease period ends. Access control policies provide strict control over who can access what secrets.
+			<li><b>Key Rolling</b> Secrets you store within Vault can be updated at any time. If using Vault's encryption-as-a-service functionality, the keys used can be rolled to a new key version at any time, while retaining the ability to decrypt values encrypted with past key versions. For dynamically-generated secrets, configurable maximum lease lifetimes ensure that key rolling is easy to enforce.
+			</ul>
+		</section>
+		<section>
+			<ul><li><b>Audit Logs</b>
+			Vault stores a detailed audit log of all authenticated client interaction: authentication, token creation, secret access, secret revocation, and more. Audit logs can be sent to multiple backends to ensure redundant copies. Paired with Vault's strict leasing policies, operators can easily trace the lifetime and origin of any secret.
+			</ul>
+		</section>
+  </section>
+  <!-- End Vault -->
+
+<!-- Start Consul -->
+	<section>
+		<section><img src="images/consul.png"></section>
+        <section><img src="images/consul1.png"></section>
+        <section><img src="images/consul2.png"></section>
+        <section>
+			<h2>Consul DNS Query Interface</h2>
+			Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
+            <pre class="float" style="width:100%"><code>
+admin@hashicorp.com: dig web-frontend.service.consul. ANY
+; <<>> DiG 9.8.3-P1 <<>> web-frontend.service.consul. ANY
+;; global options: +cmd
  
-$ vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Importing base box 'hashicorp/precise64'...
-==> default: Forwarding ports...
-default: 22 (guest) => 2222 (host) (adapter 1)
-==> default: Waiting for machine to boot...
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29981
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
+;; QUESTION SECTION:
+;web-frontend.service.consul. IN ANY
  
-$ vagrant ssh
-vagrant@precise64:~$ _
+;; ANSWER SECTION:
+web-frontend.service.consul. 0 IN A 10.0.3.83
+web-frontend.service.consul. 0 IN A 10.0.1.10
 </code></pre>
 		</section>
-    </section>
-    <section>
-        <section><img src="images/packer.png"></section>
-        <section>
-            <h2>Modern, Automated</h2>
-Packer is easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software within your Packer-made images. Packer brings machine images into the modern age, unlocking untapped potential and opening new opportunities.
-        </section>
-        <section>
-            <pre class="small float" style="center; width:120%"><code>
-$ packer build template.json
-==> virtualbox: virtualbox output will be in this color.
-==> vmware: vmware output will be in this color.
-==> vmware: Copying or downloading ISO. Progress will be reported periodically.
-==> vmware: Creating virtual machine disk
-==> vmware: Building and writing VMX file
-==> vmware: Starting HTTP server on port 8964
-==> vmware: Starting virtual machine...
-==> virtualbox: Downloading VirtualBox guest additions. Progress will be shown periodically.
-==> virtualbox: Copying or downloading ISO. Progress will be reported periodically.
-==> virtualbox: Starting HTTP server on port 8081
-==> virtualbox: Creating virtual machine...
-==> virtualbox: Creating hard drive...
-==> virtualbox: Creating forwarded port mapping for SSH (host port 3213)
-==> virtualbox: Executing custom VBoxManage commands...
-    virtualbox: Executing: modifyvm packer --memory 480
-    virtualbox: Executing: modifyvm packer --cpus 1
-==> virtualbox: Starting the virtual machine...
-==> vmware: Waiting 10s for boot...
-==> virtualbox: Waiting 10s for boot...
-            </code></pre>
-        </section>
-        <section>
-            What about Docker container images?
-            <pre class="small float" style="center; width:120%"><code>
-{
-  "type": "docker",
-  "image": "ubuntu",
-  "commit": true,
-  "changes": [
-    "USER www-data",
-    "WORKDIR /var/www",
-    "ENV HOSTNAME www.example.com",
-    "VOLUME /test1 /test2",
-    "EXPOSE 80 443",
-    "LABEL version=1.0",
-    "ONBUILD RUN date",
-    "CMD [\"nginx\", \"-g\", \"daemon off;\"]",
-    "ENTRYPOINT /var/www/start.sh"
-  ]
-}
-            </code></pre>
-        </section>
-    </section>
-	
-	<!-- end of deck -->
+  </section>
+  <!-- End  Consul -->
+  
+  <!-- Start Nomad -->
+	<section>
+		<section><img src="images/nomadlogo.png"></section>
+		<section>
+			<h2>What is Nomad?</h2>
+Nomad is a tool for managing a cluster of machines and running applications on them. Nomad abstracts away machines and the location of applications, and instead enables users to declare what they want to run.  Nomad handles where they should run and how to run them.
+			<img src="images/nomad-diagram.png">
+		</section>
+		<section>
+			<ul><li><b>Docker Support:</b> Nomad supports Docker as a first-class workload type. Jobs submitted to Nomad can use the docker driver to easily deploy containerized applications to a cluster. Nomad enforces the user-specified constraints, ensuring the application only runs in the correct region, datacenter, and host environment.
+			<li><b>Operationally Simple:</b> Nomad ships as a single binary, both for clients and servers, and requires no external services for coordination or storage.
+			<li><b>Multi-Datacenter and Multi-Region Aware:</b> Nomad models infrastructure as groups of datacenters which form a larger region. Scheduling operates at the region level allowing for cross-datacenter scheduling. Multiple regions federate together allowing jobs to be registered globally.
+			</ul>
+		</section>
+		<section>
+			<ul><li><b>Flexible Workloads:</b> Nomad has extensible support for task drivers, allowing it to run containerized, virtualized, and standalone applications. Users can easily start Docker containers, VMs, or application runtimes like Java. Nomad supports Linux, Windows, BSD and OSX, providing the flexibility to run any workload.
+			<li><b>Built for Scale:</b> Nomad was designed from the ground up to support global scale infrastructure. Nomad is distributed and highly available, using both leader election and state replication to provide availability in the face of failures. Nomad is optimistically concurrent, enabling all servers to participate in scheduling decisions which increases the total throughput and reduces latency to support demanding workloads.
+			</ul>
+		</section>
+  </section>
+  <!-- End Nomad -->
+     
+  <!-- Start Hashistack -->
+  <section>
+
+  </section>
+    <!-- End Hashistack -->
+  <!-- end of deck -->
 	
       </div>
 
